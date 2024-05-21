@@ -28,9 +28,14 @@ pipeline {
 
         stage('Build frontend') {
             steps {
-                dir("frontend") {
-                    sh 'npm install' // Для фронта сначала загрузим все сторонние зависимости
-                    sh 'npm run build' // Запустим сборку  ЫЫЫЫААААА
+                dir('frontend') {
+                    // Используем Node.js и npm, установленные через NodeJS Plugin
+                    script {
+                        def nodeHome = tool name: 'NodeJS 16', type: 'NodeJSInstallation'
+                        env.PATH = "${nodeHome}/bin:${env.PATH}"
+                    }
+                    sh 'npm install --legacy-peer-deps'
+                    sh 'npm run build'
                 }
             }
         }
