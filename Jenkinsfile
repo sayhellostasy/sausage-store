@@ -27,9 +27,9 @@ pipeline {
         }
 
         stage('Build frontend') {
-            
+
             tool {
-                nodejs 'node-16'
+                nodejs '16.10'
             }
 
             steps {
