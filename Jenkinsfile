@@ -8,7 +8,7 @@ pipeline {
     tools {
         maven 'maven-3.8.1' // Для сборки бэкенда нужен Maven
         jdk 'jdk16' // И Java Developer Kit нужной версии
-        nodejs 'NodeJS 16' // А NodeJS нужен для фронтафффdasaвфывыф
+        nodejs '16' // А NodeJS нужен для фронтафффdasaxz
     }
 
     stages {
@@ -21,23 +21,16 @@ pipeline {
 
             post {
                 success {
-                    junit 'backend/target/surefire-reports/**/*.xml' // Передадим результаты тестов 
+                    junit 'backend/target/surefire-reports/**/*.xml' // Передадим результаты тестов в Jenkins
                 }
             }
         }
 
         stage('Build frontend') {
-
-         
             steps {
-                dir('frontend') {
-                    // Используем Node.js и npm, установленные через NodeJS Plugin
-                    script {
-                        def nodeHome = tool name: 'NodeJS 16', type: 'NodeJSInstallation'
-                        env.PATH = "${nodeHome}/bin:${env.PATH}"
-                    }
-                    sh 'npm install --legacy-peer-deps'
-                    sh 'npm run build'
+                dir("frontend") {    
+                    sh 'npm install' // Для фронта сначала загрузим все сторонние зависимости
+                    sh 'npm run build' // Запустим сборку  ЫЫЫЫААААА
                 }
             }
         }
