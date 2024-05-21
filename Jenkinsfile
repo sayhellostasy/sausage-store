@@ -27,6 +27,11 @@ pipeline {
         }
 
         stage('Build frontend') {
+            
+            tool {
+                nodejs 'node-16'
+            }
+
             steps {
                 dir('frontend') {
                     // Используем Node.js и npm, установленные через NodeJS Plugin
