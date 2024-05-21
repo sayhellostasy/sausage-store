@@ -1,14 +1,10 @@
 pipeline {
     agent any // Выбираем Jenkins агента, на котором будет происходить сборка: нам нужен любой
-
-    triggers {
-        pollSCM('H/5 * * * *') // Запускать будем автоматически по крону примерно раз в 5 минут
-    }
-
+    
     tools {
         maven 'maven-3.8.1' // Для сборки бэкенда нужен Maven
         jdk 'jdk16' // И Java Developer Kit нужной версии
-        nodejs 'node-16' // А NodeJS нужен для фронтаффф
+        nodejs 'node-16' // А NodeJS нужен для фронтаффф  попробуем
     }
 
     stages {
