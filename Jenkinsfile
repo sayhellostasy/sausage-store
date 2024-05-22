@@ -10,7 +10,7 @@ pipeline {
         jdk 'jdk16' // И Java Developer Kit нужной версии
         nodejs 'node16' // А NodeJS нужен для фронтафффdasa
     }
-    env {
+    environment {
         SLACK_CHANEL = '#jenkins-ci-noticed'
         SLACK_CREDENTIAL_ID = 'OAuth Access Token' // ID вашего Slack token credentials
         SLACK_BASE_URL = 'https://app.slack.com/client/T074CMMLGE7/D0751JU9MH6'
