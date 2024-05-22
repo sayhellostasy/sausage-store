@@ -38,7 +38,7 @@ pipeline {
                 }
 
             }
-            steps {
+            post {
                 success {
                     slackSend channel: '#general', color: 'good', message: "Процесс сборки фронтенда успешно завершен!"
                     junit 'frontend/target/surefire-reports/**/*.xml' // Передадим результаты тестов в Jenkins
