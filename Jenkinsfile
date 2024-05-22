@@ -52,9 +52,11 @@ pipeline {
         
         stage('Save artifacts') {
             steps {
-                slackSend channel: '#general', color: 'good', message 'артефакты сохранены'
                 archiveArtifacts(artifacts: 'backend/target/sausage-store-0.0.1-SNAPSHOT.jar')
                 archiveArtifacts(artifacts: 'frontend/dist/frontend/*')
+            }
+            post {
+                slackSend channel: '#general', color: 'good', message 'артефакты сохранены'
             }
         }
     }
