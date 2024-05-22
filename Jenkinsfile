@@ -10,11 +10,7 @@ pipeline {
         jdk 'jdk16' // И Java Developer Kit нужной версии
         nodejs 'node16' // А NodeJS нужен для фронтафффdasa
     }
-    environment {
-        SLACK_CHANEL = '#general'
-        SLACK_CREDENTIAL_ID = 'OAuth Access Token' // ID вашего Slack token credentials
-        SLACK_BASE_URL = 'https://app.slack.com/client/T074CMMLGE7/D0751JU9MH6'
-    }
+
     stages {
         stage('Build & Test backend') {
             steps {
@@ -23,30 +19,30 @@ pipeline {
                 }
             }
 
-           post {
+            post {
                 success {
-                    slackSend(
-                        baseUrl: "${env.SLACK_BASE_URL}", 
-                        channel: "${env.SLACK_CHANNEL}", 
-                        color: 'good', 
-                        message: "Backend build succeeded"
-                    )
-                    junit 'backend/target/surefire-reports/**/*.xml'
+                    slackSend channel: '#general', color: 'good', message: "Процесс успешно завершен!"
+                    junit 'backend/target/surefire-reports/**/*.xml' // Передадим результаты тестов в Jenkins
                 }
                 failure {
-                    slackSend(
-                        baseUrl: "${env.SLACK_BASE_URL}", 
-                        channel: "${env.SLACK_CHANNEL}", 
-                        color: 'danger', 
-                        message: "Backend build failed"
-                    )
+                    slackSend channel: '#general', color: 'danger', message: "Ошибка в процессе развертывания!"
                 }
             }
-        }    
+        }
 
+        stage('Build frontend') {
+            steps {
+                dir("frontend") {    
+                    sh 'npm install' // Для фронта сначала загрузим все сторонние зависимости
+                    sh 'npm run build' // Запустим сборку  ЫЫЫЫААААА
+                }
+            }
+        }
+        
         stage('Save artifacts') {
             steps {
                 archiveArtifacts(artifacts: 'backend/target/sausage-store-0.0.1-SNAPSHOT.jar')
+                archiveArtifacts(artifacts: 'frontend/dist/frontend/*')
             }
         }
     }
