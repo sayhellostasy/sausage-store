@@ -10,7 +10,11 @@ pipeline {
         jdk 'jdk16' // И Java Developer Kit нужной версии
         nodejs 'node16' // А NodeJS нужен для фронтафффdasa
     }
-
+    enviroment {
+        SLACK_CHANEL = '#jenkins-ci-noticed'
+        SLACK_CREDENTIAL_ID = 'OAuth Access Token' // ID вашего Slack token credentials
+        SLACK_BASE_URL = 'https://app.slack.com/client/T074CMMLGE7/D0751JU9MH6'
+    }
     stages {
         stage('Build & Test backend') {
             steps {
@@ -19,18 +23,55 @@ pipeline {
                 }
             }
 
-            post {
+           post {
                 success {
-                    junit 'backend/target/surefire-reports/**/*.xml' // Передадим результаты тестов в Jenkins
+                    slackSend(
+                        baseUrl: "${env.SLACK_BASE_URL}", 
+                        channel: "${env.SLACK_CHANNEL}", 
+                        color: 'good', 
+                        message: "Backend build succeeded"
+                    )
+                    junit 'backend/target/surefire-reports/**/*.xml'
+                }
+                failure {
+                    slackSend(
+                        baseUrl: "${env.SLACK_BASE_URL}", 
+                        channel: "${env.SLACK_CHANNEL}", 
+                        color: 'danger', 
+                        message: "Backend build failed"
+                    )
                 }
             }
-        }
+        }    
 
         stage('Build frontend') {
             steps {
-                dir("frontend") {    
-                    sh 'npm install' // Для фронта сначала загрузим все сторонние зависимости
-                    sh 'npm run build' // Запустим сборку  ЫЫЫЫААААА
+                dir('frontend') {
+                    script {
+                        def nodeHome = tool name: 'NodeJS 16', type: 'NodeJSInstallation'
+                        env.PATH = "${nodeHome}/bin:${env.PATH}"
+                    }
+                    sh 'npm install --legacy-peer-deps'
+                    sh 'npm run build'
+                }
+            }
+
+            post {
+                success {
+                    slackSend(
+                        baseUrl: "${env.SLACK_BASE_URL}", 
+                        channel: "${env.SLACK_CHANNEL}", 
+                        color: 'good', 
+                        message: "Frontend build succeeded"
+                    )
+                }
+                failure {
+                    slackSend(
+                        baseUrl: "${env.SLACK_BASE_URL}", 
+                        channel: "${env.SLACK_CHANNEL}", 
+                        color: 'danger', 
+                        message: "Frontend build failed"
+                    )
                 }
             }
         }
