@@ -11,7 +11,7 @@ pipeline {
         nodejs 'node16' // А NodeJS нужен для фронтафффdasa
     }
     environment {
-        SLACK_CHANEL = 'general'
+        SLACK_CHANEL = '#general'
         SLACK_CREDENTIAL_ID = 'OAuth Access Token' // ID вашего Slack token credentials
         SLACK_BASE_URL = 'https://app.slack.com/client/T074CMMLGE7/D0751JU9MH6'
     }
