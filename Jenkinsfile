@@ -1,6 +1,7 @@
 pipeline {
-    agent any // Выбираем Jenkins агента, на котором будет происходить сборка: нам нужен любой
-
+    agent {
+        label "slave"
+    }
     triggers {
         pollSCM('H/5 * * * *') // Запускать будем автоматически по крону примерно раз в 5 минут
     }
@@ -56,8 +57,10 @@ pipeline {
                 archiveArtifacts(artifacts: 'frontend/dist/frontend/*')
             }
             post {
-                slackSend channel: '#general', color: 'good', message 'артефакты сохранены'
+                success {
+                    slackSend channel: '#general', color: 'good', message 'артефакты сохранены'
+                }
             }
         }
     }
-} 
+}        
