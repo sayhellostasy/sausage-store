@@ -1,7 +1,6 @@
 pipeline {
-    agent {
-        label "slave"
-    }
+    agent any // Выбираем Jenkins агента, на котором будет происходить сборка: нам нужен любой
+
     triggers {
         pollSCM('H/5 * * * *') // Запускать будем автоматически по крону примерно раз в 5 минут
     }
@@ -39,7 +38,7 @@ pipeline {
                 }
 
             }
-            post {
+            steps {
                 success {
                     slackSend channel: '#general', color: 'good', message: "Процесс сборки фронтенда успешно завершен!"
                     junit 'frontend/target/surefire-reports/**/*.xml' // Передадим результаты тестов в Jenkins
@@ -55,12 +54,9 @@ pipeline {
             steps {
                 archiveArtifacts(artifacts: 'backend/target/sausage-store-0.0.1-SNAPSHOT.jar')
                 archiveArtifacts(artifacts: 'frontend/dist/frontend/*')
+                slackSend channel: '#general', color: 'good', message: 'артефакты сохранены'
             }
-            post {
-                success {
-                    slackSend channel: '#general', color: 'good', message 'артефакты сохранены'
-                }
             }
         }
     }
-}        
+} 
