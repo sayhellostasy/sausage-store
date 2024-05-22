@@ -41,7 +41,6 @@ pipeline {
             post {
                 success {
                     slackSend channel: '#general', color: 'good', message: "Процесс сборки фронтенда успешно завершен!"
-                    junit 'frontend/target/surefire-reports/**/*.xml' // Передадим результаты тестов в Jenkins
                 }
                 failure {
                     slackSend channel: '#general', color: 'danger', message: "Ошибка в процессе сборки фронта!"
@@ -56,6 +55,6 @@ pipeline {
                 archiveArtifacts(artifacts: 'frontend/dist/frontend/*')
                 slackSend channel: '#general', color: 'good', message: 'артефакты сохранены'
             }
-            }
         }
     }
+}
