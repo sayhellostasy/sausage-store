@@ -11,7 +11,7 @@ pipeline {
         nodejs 'node16' // А NodeJS нужен для фронтафффdasa
     }
     environment {
-        SLACK_CHANEL = '#jenkins-ci-noticed'
+        SLACK_CHANEL = 'jenkins-ci-noticed'
         SLACK_CREDENTIAL_ID = 'OAuth Access Token' // ID вашего Slack token credentials
         SLACK_BASE_URL = 'https://app.slack.com/client/T074CMMLGE7/D0751JU9MH6'
     }
@@ -47,10 +47,6 @@ pipeline {
         stage('Build frontend') {
             steps {
                 dir('frontend') {
-                    script {
-                        def nodeHome = tool name: 'NodeJS 16', type: 'NodeJSInstallation'
-                        env.PATH = "${nodeHome}/bin:${env.PATH}"
-                    }
                     sh 'npm install --legacy-peer-deps'
                     sh 'npm run build'
                 }
