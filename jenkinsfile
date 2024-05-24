@@ -57,7 +57,7 @@ pipeline {
             steps {
                 archiveArtifacts(artifacts: 'backend/target/sausage-store-0.0.1-SNAPSHOT.jar')
                 archiveArtifacts(artifacts: 'frontend/dist/frontend/*')
-                slackSend channel: '#general', color: 'good', message: 'артефакты сохранены'
+                slackSend channel: '#general', color: 'good', message: 'артефаsкты сохранены'
             }
         }
     }
