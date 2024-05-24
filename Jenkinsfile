@@ -1,8 +1,10 @@
 pipeline {
     agent {
-        label 'slave'
-    }    
-    
+        node {
+            label 'slave'
+        }
+    }
+            
     triggers {
         pollSCM('H/5 * * * *') // Запускать будем автоматически по крону примерно раз в 5 минут
     }
