@@ -37,6 +37,7 @@ pipeline {
         stage('Build frontend') {
             steps {
                 dir("frontend") {    
+                    sh 'npm cache clean --force'
                     sh 'npm install' // Для фронта сначала загрузим все сторонние зависимости
                     sh 'npm run build' // Запустим сборку  ЫЫЫЫААААА
                 }
