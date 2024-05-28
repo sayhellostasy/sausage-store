@@ -33,33 +33,7 @@ pipeline {
                 }
             }
         }
-
-        stage('Build frontend') {
-            steps {
-                dir("frontend") {    
-                    sh 'npm cache clean --force'
-                    sh 'npm install' // Для фронта сначала загрузим все сторонние зависимости
-                    sh 'npm run build' // Запустим сборку  ЫЫЫЫААААА
-                }
-
-            }
-            post {
-                success {
-                    slackSend channel: '#general', color: 'good', message: "Процесс сборки фронтенда успешно завершен!"
-                }
-                failure {
-                    slackSend channel: '#general', color: 'danger', message: "Ошибка в процессе сборки фронта!"
-                }
-            }
-        }   
-
-        
-        stage('Save artifacts') {
-            steps {
-                archiveArtifacts(artifacts: 'backend/target/sausage-store-0.0.1-SNAPSHOT.jar')
-                archiveArtifacts(artifacts: 'frontend/dist/frontend/*')
-                slackSend channel: '#general', color: 'good', message: 'артефыаsыктsdsaыы сохранены'
-            }
-        }
     }
 }
+
+        
